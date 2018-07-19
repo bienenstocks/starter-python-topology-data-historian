@@ -1,0 +1,33 @@
+{
+	"appIconURL": "blueprint/streams.png",
+	"checklist": [
+		{
+			"label": "Complete the prerequisites",
+			"link": "https://console.bluemix.net/docs/cloudnative/tutorial_web.html#before-you-begin"
+		}
+	],
+	"description": "TODO",
+	"name": "Python topology data historian example",
+	"previewURLs": [],
+	"type": "OTHER",
+	"toolchain" : ["GENERIC"],
+	"tags":["streams"],
+	"thumbnailURL": "blueprint/webapp.svg",
+	"email": "avigadm@ibm.com",
+	"generators": {
+		"java": [
+			"generator-starterkit-eda-base"
+		]
+	},
+	"generatorOptions": {
+		"generator-starterkit-eda-base": {
+			"scope": "@eda",
+			"registry": "https://na.artifactory.swg-devops.com/artifactory/api/npm/bmd-npm-virtual/",
+			"version": "0.1.19"
+		}
+	},
+	"requiredCapabilities": [ "streamingAnalytics" ],
+	"servicePlans": {
+		"streamingAnalytics": "entry-container-lite"
+	}
+}
