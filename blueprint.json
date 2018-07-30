@@ -15,7 +15,7 @@
 	"thumbnailURL": "blueprint/webapp.svg",
 	"email": "avigadm@ibm.com",
 	"generators": {
-		"python": [
+		"java": [
 			"generator-starterkit-eda-base"
 		]
 	},
