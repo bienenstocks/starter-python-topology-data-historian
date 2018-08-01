@@ -85,12 +85,10 @@ def main():
     driver_options = {
         'bootstrap.servers': ','.join(creds['kafka_brokers_sasl']),
         'security.protocol': 'SASL_SSL',
-        # 'ssl.ca.location': '/etc/ssl/certs',
         'sasl.mechanisms': 'PLAIN',
         'sasl.username': creds['user'],
         'sasl.password': creds['password'],
         'api.version.request': True,
-        'broker.version.fallback': '0.10.2.1',
         'log.connection.close': False,
         'client.id': 'kafka-python-dh-producer'
     }
