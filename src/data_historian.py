@@ -1,5 +1,4 @@
 import datetime
-import object_storage_sink
 import tuple_to_csv
 from streamsx.topology import context
 from streamsx.topology.topology import Topology
