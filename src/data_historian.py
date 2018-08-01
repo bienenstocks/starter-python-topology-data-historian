@@ -67,13 +67,13 @@ def add_second_aggregate(stream):
 
 
 def main():
-    creds = {  # TODO: get SA creds
-        "apikey": "CZSDDcxx6okgUIHgLByxNyo5VpaRcrSmDjEBgVWqenhl",
-        "iam_apikey_description": "Auto generated apikey during resource-key operation for Instance - crn:v1:bluemix:public:streaming-analytics:us-south:a/f730dc759b4c3f320e480cec27def0d9:0a1a671a-cf75-4095-b692-617fa017c3c4::",
-        "iam_apikey_name": "auto-generated-apikey-81d2a60a-de64-4615-a174-f08c58a2a1d0",
-        "iam_role_crn": "crn:v1:bluemix:public:iam::::serviceRole:Writer",
-        "iam_serviceid_crn": "crn:v1:bluemix:public:iam-identity::a/f730dc759b4c3f320e480cec27def0d9::serviceid:ServiceId-2987190b-72b4-40b1-a660-d57c952bd95a",
-        "v2_rest_url": "https://streams-app-service.ng.bluemix.net/v2/streaming_analytics/0a1a671a-cf75-4095-b692-617fa017c3c4"
+    creds = { # TODO: get as env var
+        "apikey": "FJH2fYFBC5FWExHuJHrvCpEb-lAItViFtnhXMOPGKQMa",
+        "iam_apikey_description": "Auto generated apikey during resource-key operation for Instance - crn:v1:bluemix:public:streaming-analytics:us-south:a/f730dc759b4c3f320e480cec27def0d9:64a089a6-85ab-4728-9605-daa9d8879f90::",
+        "iam_apikey_name": "auto-generated-apikey-cdd52239-c76e-4168-8990-6e7ac47f2bd4",
+        "iam_role_crn": "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+        "iam_serviceid_crn": "crn:v1:bluemix:public:iam-identity::a/f730dc759b4c3f320e480cec27def0d9::serviceid:ServiceId-401f2597-4ae1-46c9-b6e8-621e79ac4166",
+        "v2_rest_url": "https://streams-app-service.ng.bluemix.net/v2/streaming_analytics/64a089a6-85ab-4728-9605-daa9d8879f90"
     }
 
     service_name = "streaming-analytics-container-hourly"  # TODO: get service name
@@ -101,7 +101,8 @@ def main():
     # csv_stream.for_each(object_storage_sink.ObjectStorageSink(csv_order))
 
     # publish to MH until COS toolkit is ready
-    messagehub.publish(csv_stream, topic='dataHistorianSampleDataOutput')
+    string_stream = csv_stream.as_string()
+    messagehub.publish(string_stream, topic='dataHistorianSampleDataOutput')
 
     # submit
     context.submit(context.ContextTypes.STREAMING_ANALYTICS_SERVICE, topo, config=streams_conf)
