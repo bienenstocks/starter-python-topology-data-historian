@@ -81,7 +81,7 @@ def main():
     topo = Topology("data_historian")
 
     # subscribe returns Stream object
-    source = messagehub.subscribe(topo, schema=CommonSchema.Json, topic='dataHistorianSampleData')
+    source = messagehub.subscribe(topo, schema=CommonSchema.Json, topic='dataHistorianStarterkitSampleData')
 
     incoming_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                           "float64 longitude,float64 latitude,float64 temperature,float64 baromin,"
@@ -96,8 +96,11 @@ def main():
                  "humidity_max2", "rainin_avg2"]
     csv_stream = agg2.stream.transform(tuple_to_csv.TupleToCsv(csv_order))
 
-    # Termination of a Stream
-    csv_stream.for_each(object_storage_sink.ObjectStorageSink(csv_order))
+    # Termination of a Stream - write to COS
+    # csv_stream.for_each(object_storage_sink.ObjectStorageSink(csv_order))
+
+    # publish to MH until COS toolkit is ready
+    messagehub.publish(csv_stream, topic='dataHistorianSampleDataOutput')
 
     # submit
     context.submit(context.ContextTypes.STREAMING_ANALYTICS_SERVICE, topo, config=streams_conf)
