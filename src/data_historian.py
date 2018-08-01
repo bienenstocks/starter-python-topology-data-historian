@@ -8,6 +8,7 @@ import streamsx.spl.op as op
 from streamsx.topology.schema import *
 from streamsx.topology import schema
 
+
 def build_streams_config(service_name, credentials):
     vcap_conf = {
         'streaming-analytics': [
@@ -24,6 +25,7 @@ def build_streams_config(service_name, credentials):
         context.ConfigParams.FORCE_REMOTE_BUILD: True,
     }
     return config
+
 
 def add_first_aggregate(stream):
     # calling last to declare a window containing any tuples that arrived in the last X minutes
@@ -66,7 +68,7 @@ def add_second_aggregate(stream):
 
 
 def main():
-    creds = { # TODO: get SA creds
+    creds = {  # TODO: get SA creds
         "apikey": "CZSDDcxx6okgUIHgLByxNyo5VpaRcrSmDjEBgVWqenhl",
         "iam_apikey_description": "Auto generated apikey during resource-key operation for Instance - crn:v1:bluemix:public:streaming-analytics:us-south:a/f730dc759b4c3f320e480cec27def0d9:0a1a671a-cf75-4095-b692-617fa017c3c4::",
         "iam_apikey_name": "auto-generated-apikey-81d2a60a-de64-4615-a174-f08c58a2a1d0",
@@ -75,7 +77,7 @@ def main():
         "v2_rest_url": "https://streams-app-service.ng.bluemix.net/v2/streaming_analytics/0a1a671a-cf75-4095-b692-617fa017c3c4"
     }
 
-    service_name="streaming-analytics-container-hourly" # TODO: get service name
+    service_name = "streaming-analytics-container-hourly"  # TODO: get service name
     streams_conf = build_streams_config(service_name, creds)
 
     topo = Topology("data_historian")
@@ -104,6 +106,7 @@ def main():
 
     # submit
     context.submit(context.ContextTypes.STREAMING_ANALYTICS_SERVICE, topo, config=streams_conf)
+
 
 if __name__ == '__main__':
     main()
