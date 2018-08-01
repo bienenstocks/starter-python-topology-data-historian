@@ -99,7 +99,6 @@ def main():
     load_events_data()
 
     while True:
-        # get next message!!!!
         message = get_next_message()
         sleep = 0.05
         try:
