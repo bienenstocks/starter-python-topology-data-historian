@@ -58,36 +58,19 @@ def get_next_message():
 
 
 def main():
-    creds = {
-        "api_key": "t_J0_K-pHHCapto8oTC2mjjZMFoIBc6BNxz-0CkYUKKZ",
-        "apikey": "t_J0_K-pHHCapto8oTC2mjjZMFoIBc6BNxz-0CkYUKKZ",
-        "iam_apikey_description": "Auto generated apikey during resource-key operation for Instance - crn:v1:bluemix:public:messagehub:us-south:a/f730dc759b4c3f320e480cec27def0d9:c7a58adb-96a2-4d4a-9ee4-0b8c949650cd::",
-        "iam_apikey_name": "auto-generated-apikey-11aad236-9181-4777-b89d-41590ddd784d",
-        "iam_role_crn": "crn:v1:bluemix:public:iam::::serviceRole:Manager",
-        "iam_serviceid_crn": "crn:v1:bluemix:public:iam-identity::a/f730dc759b4c3f320e480cec27def0d9::serviceid:ServiceId-27773766-78ae-43aa-867a-02d9f9ccc24d",
-        "instance_id": "c7a58adb-96a2-4d4a-9ee4-0b8c949650cd",
-        "kafka_admin_url": "https://mh-toysgwbjqxesretuwazhfjw.us-south.containers.appdomain.cloud",
-        "kafka_brokers_sasl": [
-            "kafka-0.mh-toysgwbjqxesretuwazhfjw.us-south.containers.appdomain.cloud:9093",
-            "kafka-1.mh-toysgwbjqxesretuwazhfjw.us-south.containers.appdomain.cloud:9093",
-            "kafka-2.mh-toysgwbjqxesretuwazhfjw.us-south.containers.appdomain.cloud:9093"
-        ],
-        "password": "t_J0_K-pHHCapto8oTC2mjjZMFoIBc6BNxz-0CkYUKKZ",
-        "user": "token"
-    }
-
+    mh_creds = "PASTE_MH_CREDENTIALS_HERE"
     topic = "dataHistorianStarterkitSampleData"
 
-    if any(k not in creds for k in ('kafka_brokers_sasl', 'user', 'password')):
+    if any(k not in mh_creds for k in ('kafka_brokers_sasl', 'user', 'password')):
         print('Error - missing credentials attributes.')
         sys.exit(-1)
 
     driver_options = {
-        'bootstrap.servers': ','.join(creds['kafka_brokers_sasl']),
+        'bootstrap.servers': ','.join(mh_creds['kafka_brokers_sasl']),
         'security.protocol': 'SASL_SSL',
         'sasl.mechanisms': 'PLAIN',
-        'sasl.username': creds['user'],
-        'sasl.password': creds['password'],
+        'sasl.username': mh_creds['user'],
+        'sasl.password': mh_creds['password'],
         'api.version.request': True,
         'log.connection.close': False,
         'client.id': 'kafka-python-dh-producer'
