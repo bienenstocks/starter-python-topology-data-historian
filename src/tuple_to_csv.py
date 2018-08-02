@@ -3,7 +3,7 @@ class TupleToCsv:
         self.attributes_order = attributes_order
 
     def __call__(self, tuple):
-        ret = ""
+        csv_line = ""
         for attribute in self.attributes_order:
-            ret += str(tuple[attribute]) + ","
-        return ret
+            csv_line += str(tuple[attribute]) + ","
+        return csv_line
