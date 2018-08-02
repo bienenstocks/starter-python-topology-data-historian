@@ -78,10 +78,10 @@ def main():
     service_name = "streaming-analytics-container-hourly"  # TODO: get service name
     streams_conf = build_streams_config(service_name, sa_creds)
 
-    topo = Topology("data_historian")
+    topology = Topology("data_historian")
 
     # subscribe returns Stream object
-    source = messagehub.subscribe(topo, schema=CommonSchema.Json, topic='dataHistorianStarterkitSampleData')
+    source = messagehub.subscribe(topology, schema=CommonSchema.Json, topic='dataHistorianStarterkitSampleData')
 
     incoming_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                           "float64 longitude,float64 latitude,float64 temperature,float64 baromin,"
@@ -104,7 +104,7 @@ def main():
     messagehub.publish(string_stream, topic='dataHistorianSampleDataOutput')
 
     # submit
-    context.submit(context.ContextTypes.STREAMING_ANALYTICS_SERVICE, topo, config=streams_conf)
+    context.submit(context.ContextTypes.STREAMING_ANALYTICS_SERVICE, topology, config=streams_conf)
 
 
 if __name__ == '__main__':
