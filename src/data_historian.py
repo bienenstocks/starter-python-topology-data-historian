@@ -34,7 +34,7 @@ def add_first_aggregate(stream):
     agg_output_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                             "float64 longitude,float64 latitude,float64 temperature_std1,"
                                             "float64 baromin_min1,float64 humidity_max1,float64 rainin_avg1>")
-    agg = op.Map('spl.relational::Aggregate', win, schema=agg_output_schema)
+    agg = op.Map('spl.relational::Aggregate', win, schema=agg_output_schema, params={'groupBy': 'id'})
     agg.id = agg.output('Any(id)')
     agg.tz = agg.output('Any(tz)')
     agg.dateutc = agg.output('Any(dateutc)')
@@ -54,7 +54,7 @@ def add_second_aggregate(stream):
     agg_output_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                             "float64 longitude,float64 latitude,float64 temperature_std2,"
                                             "float64 baromin_min2,float64 humidity_max2,float64 rainin_avg2>")
-    agg = op.Map('spl.relational::Aggregate', win, schema=agg_output_schema)
+    agg = op.Map('spl.relational::Aggregate', win, schema=agg_output_schema, params={'groupBy': 'id'})
     agg.id = agg.output('Any(id)')
     agg.tz = agg.output('Any(tz)')
     agg.dateutc = agg.output('Any(dateutc)')
