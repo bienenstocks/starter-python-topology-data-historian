@@ -34,7 +34,8 @@ def add_first_aggregate(stream):
     agg_output_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                             "float64 longitude,float64 latitude,float64 temperature_std1,"
                                             "float64 baromin_min1,float64 humidity_max1,float64 rainin_avg1>")
-    agg = op.Map('spl.relational::Aggregate', win, schema=agg_output_schema, params={'groupBy': 'id'})
+    agg = op.Map('spl.relational::Aggregate', win, schema=agg_output_schema, params={'groupBy': 'id'},
+                 name="Aggregate_1_minute")
     agg.id = agg.output('Any(id)')
     agg.tz = agg.output('Any(tz)')
     agg.dateutc = agg.output('Any(dateutc)')
@@ -54,7 +55,8 @@ def add_second_aggregate(stream):
     agg_output_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                             "float64 longitude,float64 latitude,float64 temperature_std2,"
                                             "float64 baromin_min2,float64 humidity_max2,float64 rainin_avg2>")
-    agg = op.Map('spl.relational::Aggregate', win, schema=agg_output_schema, params={'groupBy': 'id'})
+    agg = op.Map('spl.relational::Aggregate', win, schema=agg_output_schema, params={'groupBy': 'id'},
+                 name="Aggregate_3_minutes")
     agg.id = agg.output('Any(id)')
     agg.tz = agg.output('Any(tz)')
     agg.dateutc = agg.output('Any(dateutc)')
@@ -94,14 +96,12 @@ def main():
     # transform the stream of tuples to a stream of csv lines
     csv_order = ["id", "tz", "dateutc", "time_stamp", "longitude", "latitude", "temperature_std2", "baromin_min2",
                  "humidity_max2", "rainin_avg2"]
-    csv_stream = agg2.stream.transform(TupleToCsv(csv_order))
+    csv_stream = agg2.stream.map(TupleToCsv(csv_order), schema=CommonSchema.String)
 
-    # Termination of a Stream - write to COS
     # csv_stream.for_each(object_storage_sink.ObjectStorageSink(csv_order))
 
     # publish to MH until COS toolkit is ready
-    string_stream = csv_stream.as_string()
-    messagehub.publish(string_stream, topic='dataHistorianSampleDataOutput')
+    messagehub.publish(csv_stream, topic='dataHistorianSampleDataOutput')
 
     # submit
     context.submit(context.ContextTypes.STREAMING_ANALYTICS_SERVICE, topology, config=streams_conf)
