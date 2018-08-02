@@ -28,7 +28,7 @@ def build_streams_config(service_name, credentials):
     return config
 
 
-def add_first_aggregate(stream):
+def add_1min_aggregate(stream):
     # calling last to declare a window containing any tuples that arrived in the last X minutes
     win = stream.last(datetime.timedelta(minutes=1))
     agg_output_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
@@ -49,7 +49,7 @@ def add_first_aggregate(stream):
     return agg
 
 
-def add_second_aggregate(stream):
+def add_3min_aggregate(stream):
     # calling last to declare a window containing any tuples that arrived in the last X minutes
     win = stream.last(datetime.timedelta(minutes=3))
     agg_output_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
@@ -90,8 +90,8 @@ def main():
                                           "float64 humidity,float64 rainin>")
     source = source.map(lambda x: x, schema=incoming_schema)
 
-    agg1 = add_first_aggregate(source)
-    agg2 = add_second_aggregate(agg1.stream)
+    agg1 = add_1min_aggregate(source)
+    agg2 = add_3min_aggregate(agg1.stream)
 
     # transform the stream of tuples to a stream of csv lines
     csv_order = ["id", "tz", "dateutc", "time_stamp", "longitude", "latitude", "temperature_std2", "baromin_min2",
