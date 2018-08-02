@@ -51,7 +51,7 @@ def get_next_message():
     msg = msg_array[next_for_id]
     msg['time_stamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    curr_state_map[id] = curr_state_map[id] + 1
+    curr_state_map[id] += 1
     if curr_state_map[id] == len(msg_array):
         curr_state_map[id] = 0
     return msg
