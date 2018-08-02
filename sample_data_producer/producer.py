@@ -58,7 +58,24 @@ def get_next_message():
 
 
 def main():
-    mh_creds = "PASTE_MH_CREDENTIALS_HERE"
+    mh_creds = {
+        "api_key": "t_J0_K-pHHCapto8oTC2mjjZMFoIBc6BNxz-0CkYUKKZ",
+        "apikey": "t_J0_K-pHHCapto8oTC2mjjZMFoIBc6BNxz-0CkYUKKZ",
+        "iam_apikey_description": "Auto generated apikey during resource-key operation for Instance - crn:v1:bluemix:public:messagehub:us-south:a/f730dc759b4c3f320e480cec27def0d9:c7a58adb-96a2-4d4a-9ee4-0b8c949650cd::",
+        "iam_apikey_name": "auto-generated-apikey-11aad236-9181-4777-b89d-41590ddd784d",
+        "iam_role_crn": "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+        "iam_serviceid_crn": "crn:v1:bluemix:public:iam-identity::a/f730dc759b4c3f320e480cec27def0d9::serviceid:ServiceId-27773766-78ae-43aa-867a-02d9f9ccc24d",
+        "instance_id": "c7a58adb-96a2-4d4a-9ee4-0b8c949650cd",
+        "kafka_admin_url": "https://mh-toysgwbjqxesretuwazhfjw.us-south.containers.appdomain.cloud",
+        "kafka_brokers_sasl": [
+            "kafka-0.mh-toysgwbjqxesretuwazhfjw.us-south.containers.appdomain.cloud:9093",
+            "kafka-1.mh-toysgwbjqxesretuwazhfjw.us-south.containers.appdomain.cloud:9093",
+            "kafka-2.mh-toysgwbjqxesretuwazhfjw.us-south.containers.appdomain.cloud:9093"
+        ],
+        "password": "t_J0_K-pHHCapto8oTC2mjjZMFoIBc6BNxz-0CkYUKKZ",
+        "user": "token"
+    }
+
     topic = "dataHistorianStarterkitSampleData"
 
     if any(k not in mh_creds for k in ('kafka_brokers_sasl', 'user', 'password')):
