@@ -1,7 +1,7 @@
 import datetime
 import os
 import json
-import tuple_to_csv
+from tuple_to_csv import TupleToCsv
 from streamsx.topology import context
 from streamsx.topology.topology import Topology
 import streamsx.messagehub as messagehub
@@ -94,7 +94,7 @@ def main():
     # transform the stream of tuples to a stream of csv lines
     csv_order = ["id", "tz", "dateutc", "time_stamp", "longitude", "latitude", "temperature_std2", "baromin_min2",
                  "humidity_max2", "rainin_avg2"]
-    csv_stream = agg2.stream.transform(tuple_to_csv.TupleToCsv(csv_order))
+    csv_stream = agg2.stream.transform(TupleToCsv(csv_order))
 
     # Termination of a Stream - write to COS
     # csv_stream.for_each(object_storage_sink.ObjectStorageSink(csv_order))
