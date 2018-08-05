@@ -46,6 +46,7 @@ def load_events_data():
 
 
 def get_next_message():
+    # choose random id
     id, msg_array = random.choice(list(events_dict.items()))
     next_for_id = next_message_per_id[id]
     msg = msg_array[next_for_id]
