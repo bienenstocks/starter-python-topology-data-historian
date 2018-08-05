@@ -6,7 +6,7 @@ import random
 import datetime
 
 events_dict = {}
-curr_state_map = {}
+next_message_per_id = {}
 
 
 def on_delivery(err, msg):
@@ -42,18 +42,18 @@ def load_events_data():
             events_dict[msg['id']].append(msg)
         else:
             events_dict[msg['id']] = [msg]
-            curr_state_map[msg['id']] = 0
+            next_message_per_id[msg['id']] = 0
 
 
 def get_next_message():
     id, msg_array = random.choice(list(events_dict.items()))
-    next_for_id = curr_state_map[id]
+    next_for_id = next_message_per_id[id]
     msg = msg_array[next_for_id]
     msg['time_stamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    curr_state_map[id] += 1
-    if curr_state_map[id] == len(msg_array):
-        curr_state_map[id] = 0
+    next_message_per_id[id] += 1
+    if next_message_per_id[id] == len(msg_array):
+        next_message_per_id[id] = 0
     return msg
 
 
