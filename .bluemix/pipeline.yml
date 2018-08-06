@@ -1,40 +1,26 @@
 ---
 stages:
-- name: Build flow
+- name: Deploy flow to development
   inputs:
   - type: git
     branch: master
     service: ${REPO}
   triggers:
   - type: commit
-  jobs:
-  - name: Build driver
-    type: builder
-    artifact_dir: target
-    build_type: pip
-    script: |-
-      #!/bin/bash
-      pip install streamsx
-      pip install streamsx.messagehub
-- name: Deploy flow to development
-  inputs:
-  - type: job
-    stage: Build flow
-    job: Build driver
-  triggers:
-  - type: stage
   properties:
-  - name: streaming_analytics_credentials
-    value: 'ENTER STREAMING ANALYTICS CREDENTIALS HERE'
-    type: text_area
+    - name: streaming_analytics_credentials
+      value: 'ENTER STREAMING ANALYTICS CREDENTIALS HERE'
+      type: text_area
   jobs:
   - name: Deploy flow
     type: deployer
     deploy_type: customimage
     script: |
       #!/bin/bash
-      python data_historian.py
-    docker_image: python:3.5.3-alpine
+      pip3 install streamsx
+      pip3 install streamsx.messagehub
+      python3 ./src/data_historian.py
+    docker_image: avigad/java-python-alpine
 hooks:
 - enabled: true
   label: null
