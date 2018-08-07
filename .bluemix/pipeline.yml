@@ -17,8 +17,7 @@ stages:
     deploy_type: customimage
     script: |
       #!/bin/bash
-      pip3 install streamsx
-      pip3 install streamsx.messagehub
+      pip3 install -r requirements.txt
       python3 ./src/data_historian.py
     docker_image: avigad/java-python-alpine
 hooks:
