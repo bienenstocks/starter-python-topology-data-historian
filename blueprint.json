@@ -6,7 +6,7 @@
 			"link": "https://console.bluemix.net/docs/cloudnative/tutorial_web.html#before-you-begin"
 		}
 	],
-	"description": "TODO",
+	"description": "Data historian example that gets you up and running with Streaming Analytics",
 	"name": "Python topology data historian example",
 	"previewURLs": [],
 	"type": "OTHER",
