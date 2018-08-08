@@ -23,7 +23,7 @@ def build_streams_config(service_name, credentials):
     config = {
         context.ConfigParams.VCAP_SERVICES: vcap_conf,
         context.ConfigParams.SERVICE_NAME: service_name,
-        context.ConfigParams.FORCE_REMOTE_BUILD: True,
+        context.ConfigParams.FORCE_REMOTE_BUILD: True
     }
     return config
 
