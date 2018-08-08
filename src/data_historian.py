@@ -77,7 +77,11 @@ def main():
         sys.exit(-1)
     sa_creds = json.loads(sa_creds_env)
 
-    service_name = "streaming-analytics-container-hourly"  # TODO: get service name
+    service_name = os.getenv('SA_NAME', None)
+    if service_name is None:
+        print('Error - SA_NAME environment variable is missing.')
+        sys.exit(-1)
+
     streams_conf = build_streams_config(service_name, sa_creds)
 
     topology = Topology("data_historian")
