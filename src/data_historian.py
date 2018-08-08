@@ -85,6 +85,7 @@ def main():
     # subscribe returns Stream object
     source = messagehub.subscribe(topology, schema=CommonSchema.Json, topic='dataHistorianStarterkitSampleData')
 
+    # define message hub tuples schema
     incoming_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                           "float64 longitude,float64 latitude,float64 temperature,float64 baromin,"
                                           "float64 humidity,float64 rainin>")
@@ -98,9 +99,10 @@ def main():
                  "humidity_max2", "rainin_avg2"]
     csv_stream = agg2.stream.map(TupleToCsv(csv_order), schema=CommonSchema.String)
 
+    # pending 4.3 cloud release with COS toolkit
     # csv_stream.for_each(object_storage_sink.ObjectStorageSink(csv_order))
 
-    # publish to MH until COS toolkit is ready
+    # publish to MH until 4.3 cloud release is out
     messagehub.publish(csv_stream, topic='dataHistorianSampleDataOutput')
 
     # submit
