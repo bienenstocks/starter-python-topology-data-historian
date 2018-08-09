@@ -76,7 +76,6 @@ def main():
         'sasl.username': mh_creds['user'],
         'sasl.password': mh_creds['password'],
         'api.version.request': True,
-        'log.connection.close': False,
         'client.id': 'kafka-python-dh-producer'
     }
 
