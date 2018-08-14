@@ -58,18 +58,8 @@ def get_next_message():
     return msg
 
 
-def main():
-    mh_creds = {
-        # PASTE_MH_CREDENTIALS_HERE
-    }
-
-    topic = "dataHistorianStarterkitSampleData"
-
-    if any(k not in mh_creds for k in ('kafka_brokers_sasl', 'user', 'password')):
-        print('Error - missing credentials attributes.')
-        sys.exit(-1)
-
-    driver_options = {
+def get_kafka_driver_options(mh_creds):
+    return {
         'bootstrap.servers': ','.join(mh_creds['kafka_brokers_sasl']),
         'security.protocol': 'SASL_SSL',
         'sasl.mechanisms': 'PLAIN',
@@ -79,9 +69,21 @@ def main():
         'client.id': 'kafka-python-dh-producer'
     }
 
-    producer = Producer(driver_options)
 
-    # load sample data
+def main():
+    mh_creds = {
+        # PASTE_MH_CREDENTIALS_HERE
+    }
+
+    if any(k not in mh_creds for k in ('kafka_brokers_sasl', 'user', 'password')):
+        print('Error - missing credentials attributes.')
+        sys.exit(-1)
+
+    driver_options = get_kafka_driver_options(mh_creds)
+    producer = Producer(driver_options)
+    topic = "dataHistorianStarterkitSampleData"
+
+# load sample data
     load_events_data()
 
     while True:
