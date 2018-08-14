@@ -83,7 +83,7 @@ def main():
     producer = Producer(driver_options)
     topic = "dataHistorianStarterkitSampleData"
 
-# load sample data
+    # load sample data from file
     load_events_data()
 
     while True:
