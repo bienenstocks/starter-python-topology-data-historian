@@ -1,2 +1,2 @@
-streamsx
-streamsx.messagehub
+streamsx==1.9.8
+streamsx.messagehub==0.2.4
