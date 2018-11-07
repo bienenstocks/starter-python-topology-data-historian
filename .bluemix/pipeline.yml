@@ -1,0 +1,27 @@
+---
+stages:
+- name: Deploy flow to development
+  inputs:
+  - type: git
+    branch: master
+    service: ${REPO}
+  triggers:
+  - type: commit
+  properties:
+    - name: streaming_analytics_credentials
+      value: 'ENTER STREAMING ANALYTICS CREDENTIALS HERE'
+      type: text_area
+  jobs:
+  - name: Deploy flow
+    type: deployer
+    deploy_type: customimage
+    script: |
+      #!/bin/bash
+      pip3 install -r requirements.txt
+      python3 ./src/data_historian.py
+    docker_image: avigad/java-python-alpine
+hooks:
+- enabled: true
+  label: null
+  ssl_enabled: false
+  url: http://lms-api/v1/messaging/webhook/publish
