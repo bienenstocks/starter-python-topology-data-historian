@@ -12,8 +12,6 @@ next_message_per_id = {}
 def on_delivery(err, msg):
     if err is not None:
         print('Message delivery failed: {}'.format(err))
-    else:
-        print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
 
 
 def generate_message(event):
@@ -72,7 +70,7 @@ def get_kafka_driver_options(mh_creds):
 
 def main():
     mh_creds = {
-        # PASTE_MH_CREDENTIALS_HERE
+        # Paste Events Streams credentials here
     }
 
     if any(k not in mh_creds for k in ('kafka_brokers_sasl', 'user', 'password')):
