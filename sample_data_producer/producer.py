@@ -19,13 +19,13 @@ def create_topic(name, driver_options):
     for topic, f in fs.items():
         try:
             f.result()
-            print("Topic {} created successfully.".format(topic))
+            print("Topic '{}' created successfully.".format(topic))
         except Exception as e:
             err_msg = str(e)
             if "already exists" in err_msg.lower():
                 print("Topic '{}' already exists.".format(topic))
             else:
-                print("Failed to create topic {}: {}".format(topic, e))
+                print("Failed to create topic '{}': {}".format(topic, e))
 
 
 def on_delivery(err, msg):
@@ -104,6 +104,7 @@ def main():
     # load sample data from file
     load_events_data()
 
+    print("starting to produce data...");
     while True:
         message = get_next_message()
         sleep = 0.05
