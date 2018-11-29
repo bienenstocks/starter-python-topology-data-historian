@@ -1,5 +1,4 @@
 import datetime
-import os
 import json
 from tuple_to_csv import TupleToCsv
 from streamsx.topology import context
@@ -8,29 +7,28 @@ import streamsx.messagehub as messagehub
 import streamsx.spl.op as op
 from streamsx.topology.schema import *
 from streamsx.topology import schema
+import streamsx.objectstorage as cos
 
 
-def build_streams_config(service_name, credentials):
-    vcap_conf = {
-        'streaming-analytics': [
-            {
-                'name': service_name,
-                'credentials': credentials,
-            }
-        ]
-    }
+def load_vcap_json():
+    vcap_file = open('../vcap.json')
+    vcap_str = vcap_file.read()
+    vcap_json = json.loads(vcap_str)
+    return vcap_json
 
+
+def build_streams_config(vcap_json):
+    sa_instance = vcap_json['streaming-analytics'][0]
     config = {
-        context.ConfigParams.VCAP_SERVICES: vcap_conf,
-        context.ConfigParams.SERVICE_NAME: service_name,
+        context.ConfigParams.SERVICE_DEFINITION: sa_instance['credentials'],
         context.ConfigParams.FORCE_REMOTE_BUILD: True
     }
     return config
 
 
 def add_1min_aggregate(stream):
-    # calling last to declare a window containing any tuples that arrived in the last X minutes
-    win = stream.last(datetime.timedelta(minutes=1))
+    # calling batch to declare a window containing any tuples that arrived in the last minute
+    win = stream.batch(datetime.timedelta(minutes=1))
     agg_output_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                             "float64 longitude,float64 latitude,float64 temperature_std1,"
                                             "float64 baromin_min1,float64 humidity_max1,float64 rainin_avg1>")
@@ -50,8 +48,8 @@ def add_1min_aggregate(stream):
 
 
 def add_3min_aggregate(stream):
-    # calling last to declare a window containing any tuples that arrived in the last X minutes
-    win = stream.last(datetime.timedelta(minutes=3))
+    # calling batch to declare a window containing any tuples that arrived in the last 3 minutes
+    win = stream.batch(datetime.timedelta(minutes=3))
     agg_output_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                             "float64 longitude,float64 latitude,float64 temperature_std2,"
                                             "float64 baromin_min2,float64 humidity_max2,float64 rainin_avg2>")
@@ -71,25 +69,16 @@ def add_3min_aggregate(stream):
 
 
 def main():
-    sa_creds_env = os.getenv('SA_CREDENTIALS', None)
-    if sa_creds_env is None:
-        print('Error - SA_CREDENTIALS environment variable is missing.')
-        sys.exit(-1)
-    sa_creds = json.loads(sa_creds_env)
-
-    service_name = os.getenv('SA_NAME', None)
-    if service_name is None:
-        print('Error - SA_NAME environment variable is missing.')
-        sys.exit(-1)
-
-    streams_conf = build_streams_config(service_name, sa_creds)
+    vcap_json = load_vcap_json()
+    cos_config = vcap_json['cos']
+    streams_conf = build_streams_config(vcap_json)
 
     topology = Topology("data_historian")
 
     # subscribe returns Stream object
     source = messagehub.subscribe(topology, schema=CommonSchema.Json, topic='dataHistorianStarterkitSampleData')
 
-    # define message hub tuples schema
+    # define the message hub tuples schema
     incoming_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
                                           "float64 longitude,float64 latitude,float64 temperature,float64 baromin,"
                                           "float64 humidity,float64 rainin>")
@@ -103,11 +92,9 @@ def main():
                  "humidity_max2", "rainin_avg2"]
     csv_stream = agg2.stream.map(TupleToCsv(csv_order), schema=CommonSchema.String)
 
-    # pending 4.3 cloud release with COS toolkit
-    # csv_stream.for_each(object_storage_sink.ObjectStorageSink(csv_order))
-
-    # publish to MH until 4.3 cloud release is out
-    messagehub.publish(csv_stream, topic='dataHistorianSampleDataOutput')
+    # write the stream to COS
+    cos.write(csv_stream, endpoint=cos_config["endpoint"], bucket=cos_config["bucket"],
+              objectName='datahistorian_%TIME.csv', timePerObject=45.0)
 
     # submit
     context.submit(context.ContextTypes.STREAMING_ANALYTICS_SERVICE, topology, config=streams_conf)

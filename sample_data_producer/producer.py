@@ -1,4 +1,5 @@
 from confluent_kafka import Producer
+from confluent_kafka.admin import AdminClient, NewTopic
 import sys
 import time
 import json
@@ -9,11 +10,27 @@ events_dict = {}
 next_message_per_id = {}
 
 
+def create_topic(name, driver_options):
+    admin_client = AdminClient(driver_options)
+    new_topics = [NewTopic(name, num_partitions=1, replication_factor=3)]
+    fs = admin_client.create_topics(new_topics, operation_timeout=60)
+
+    # Wait for operation to finish
+    for topic, f in fs.items():
+        try:
+            f.result()
+            print("Topic '{}' created successfully.".format(topic))
+        except Exception as e:
+            err_msg = str(e)
+            if "already exists" in err_msg.lower():
+                print("Topic '{}' already exists.".format(topic))
+            else:
+                print("Failed to create topic '{}': {}".format(topic, e))
+
+
 def on_delivery(err, msg):
     if err is not None:
         print('Message delivery failed: {}'.format(err))
-    else:
-        print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
 
 
 def generate_message(event):
@@ -72,20 +89,22 @@ def get_kafka_driver_options(mh_creds):
 
 def main():
     mh_creds = {
-        # PASTE_MH_CREDENTIALS_HERE
+        # Paste Events Streams credentials here
     }
 
     if any(k not in mh_creds for k in ('kafka_brokers_sasl', 'user', 'password')):
         print('Error - missing credentials attributes.')
         sys.exit(-1)
 
-    driver_options = get_kafka_driver_options(mh_creds)
-    producer = Producer(driver_options)
     topic = "dataHistorianStarterkitSampleData"
+    driver_options = get_kafka_driver_options(mh_creds)
+    create_topic(topic, driver_options)
+    producer = Producer(driver_options)
 
     # load sample data from file
     load_events_data()
 
+    print("starting to produce data...");
     while True:
         message = get_next_message()
         sleep = 0.05
