@@ -71,12 +71,14 @@ def add_3min_aggregate(stream):
 def main():
     vcap_json = load_vcap_json()
     cos_config = vcap_json['cos']
+    mh_config = vcap_json['messagehub']
     streams_conf = build_streams_config(vcap_json)
 
     topology = Topology("data_historian")
 
     # subscribe returns Stream object
-    source = messagehub.subscribe(topology, schema=CommonSchema.Json, topic='dataHistorianStarterkitSampleData')
+    source = messagehub.subscribe(topology, schema=CommonSchema.Json, topic='dataHistorianStarterkitSampleData',
+                                  credentials=mh_config)
 
     # define the message hub tuples schema
     incoming_schema = schema.StreamSchema("tuple <rstring id,rstring tz,rstring dateutc,rstring time_stamp,"
@@ -94,7 +96,7 @@ def main():
 
     # write the stream to COS
     cos.write(csv_stream, endpoint=cos_config["endpoint"], bucket=cos_config["bucket"],
-              objectName='datahistorian_%TIME.csv', timePerObject=45.0)
+              objectName='datahistorian_%TIME.csv', timePerObject=45.0, credentials=cos_config)
 
     # submit
     context.submit(context.ContextTypes.STREAMING_ANALYTICS_SERVICE, topology, config=streams_conf)

@@ -1,3 +1,3 @@
 streamsx==1.11.6b
-streamsx.messagehub==0.2.4
-streamsx.objectstorage==0.2.3
+streamsx.messagehub==0.4.0
+streamsx.objectstorage==0.3.0
