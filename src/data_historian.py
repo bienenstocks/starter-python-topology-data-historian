@@ -94,7 +94,7 @@ def main():
 
     # write the stream to COS
     cos.write(csv_stream, endpoint=cos_config["endpoint"], bucket=cos_config["bucket"],
-              objectName='datahistorian_%TIME.csv', timePerObject=45.0)
+              objectName='datahistorian_%TIME.csv', timePerObject=45.0, credentials=cos_config)
 
     # submit
     context.submit(context.ContextTypes.STREAMING_ANALYTICS_SERVICE, topology, config=streams_conf)
