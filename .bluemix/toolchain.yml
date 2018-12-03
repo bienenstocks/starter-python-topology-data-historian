@@ -2,7 +2,7 @@ version: '2'
 messages:
   $i18n: locales.yml
 template:
-  name: "starter-java-beam-data-historian-{{timestamp}}"
+  name: "starter-python-topology-data-historian-{{timestamp}}"
   description: "This toolchain includes tools to develop and deploy your event driven app. \n\nThis toolchain uses tools that are part of the Continuous Delivery service. If an instance of that service isn't already in your organization, when you click **Create**, it is automatically added at no cost to you. For more information and terms, see the [IBM Cloud catalog](/catalog/services/continuous-delivery/).\n\nTo get started, click **Create**."
   header: '![](toolchain.svg?localize)'
   icon: icon.svg
@@ -11,11 +11,11 @@ template:
     - sample-repo
   info:
     git url: >-
-      [https://github.com/bienenstocks/starter-java-beam-data-historian](https://github.com/bienenstocks/starter-java-beam-data-historian)
+      [https://github.com/bienenstocks/starter-python-topology-data-historian](https://github.com/bienenstocks/starter-python-topology-data-historian)
     git branch: >-
-      [master](https://github.com/bienenstocks/starter-java-beam-data-historian/tree/master)
+      [master](https://github.com/bienenstocks/starter-python-topology-data-historian/tree/master)
 toolchain:
-  name: 'starter-java-beam-data-historian-{{timestamp}}'
+  name: 'starter-python-topology-data-historian-{{timestamp}}'
   template:
     getting_started:
       $ref: "#/messages/template.gettingStarted"
@@ -24,7 +24,7 @@ services:
     service_id: hostedgit
     parameters:
       repo_name: '{{toolchain.name}}'
-      repo_url: 'https://github.com/bienenstocks/starter-java-beam-data-historian'
+      repo_url: 'https://github.com/bienenstocks/starter-python-topology-data-historian'
       type: clone
       has_issues: true
       enable_traceability: true
