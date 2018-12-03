@@ -1,0 +1,49 @@
+version: '2'
+template:
+  name: Continuous Delivery Toolchain
+  description: "This toolchain includes tools to develop and deploy your event driven app. \n\nThis toolchain uses tools that are part of the Continuous Delivery service. If an instance of that service isn't already in your organization, when you click **Create**, it is automatically added at no cost to you. For more information and terms, see the [IBM Cloud catalog](/catalog/services/continuous-delivery/).\n\nTo get started, click **Create**."
+  required:
+    - repo
+    - build
+
+toolchain:
+  name: {{name}}
+
+services:
+  # Github repos
+  repo:
+    service_id: hostedgit
+    parameters:
+      repo_url: "{{tag '#zip_url'}}{{tag 'zip_url'}}{{tag '/zip_url'}}{{tag '^zip_url'}}{{tag 'repository'}}{{tag '/zip_url'}}"
+      repo_name: "{{tag 'toolchain.name'}}"
+      type: clone
+      has_issues: true
+      enable_traceability: true
+
+  # Pipelines
+  build:
+    service_id: pipeline
+    parameters:
+      services:
+        - repo
+      name: "{{tag 'name'}}"
+      ui-pipeline: true
+      configuration:
+        content:
+          $text: pipeline.yml
+        env:
+          REPO: repo
+          API_KEY: "{{tag 'form.pipeline.parameters.api-key'}}"
+        execute: true
+
+  #Web IDE
+  webide:
+    service_id: orion
+
+#Deployment
+form:
+  pipeline:
+    parameters:
+      api-key: "{{tag 'api-key'}}"
+    schema:
+      $ref: deploy.json

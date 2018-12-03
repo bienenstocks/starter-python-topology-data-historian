@@ -24,22 +24,18 @@ stages:
     service: ${REPO}
   triggers:
   - type: commit
-  properties:
-   - name: SA_INSTANCE
-     value: ${SA_INSTANCE_NAME}
-     type: text
-   - name: MH_INSTANCE
-     value: ${MH_INSTANCE_NAME}
-     type: text
-   - name: COS_INSTANCE
-     value: ${COS_INSTANCE_NAME}
-     type: text
-   - name: APP_NAME
-     value: ${CF_APP_NAME}
-     type: text
+ properties:
    - name: PIPELINE_API_KEY
      value: ${API_KEY}
      type: text
+   - name: APP_NAME
+     value: {{name}}
+     type: text
+{{#with config.creds.streamingAnalytics.[0]}}
+   - name: SA_INSTANCE
+     value: {{this.serviceInfo.name}}
+     type: text
+{{/with}}
   jobs:
   - name: Deploy flow
     type: deployer

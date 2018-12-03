@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Sample Deploy Stage",
+  "longDescription": "The Delivery Pipeline automates continuous deployment.",
+  "type": "object",
+  "properties": {
+    "api-key": {
+      "description": "IBM Cloud API keys contain permissions that grant access to organizations, spaces, and Kubernetes clusters. You can obtain your API key with 'bx iam api-key-create' or via the console at https://console.bluemix.net/iam/#/apikeys by clicking **Create API key** (Each API key only can be viewed once).",
+      "type": "string"
+    }
+  },
+  "required": ["api-key"],  "form": [
+  {
+    "type": "password",
+    "readonly": false,
+    "title": "IBM Cloud API Key",
+    "key": "api-key"
+  }]
+}
