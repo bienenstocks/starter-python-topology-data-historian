@@ -40,13 +40,6 @@ services:
           $text: pipeline.yml
         env:
           SAMPLE_REPO: sample-repo
-          CF_APP_NAME: '{{form.pipeline.parameters.prod-app-name}}'
-          PROD_SPACE_NAME: '{{form.pipeline.parameters.prod-space}}'
-          PROD_ORG_NAME: '{{form.pipeline.parameters.prod-organization}}'
-          PROD_REGION_ID: '{{form.pipeline.parameters.prod-region}}'
-          SA_INSTANCE_NAME: "{{form.pipeline.parameters.sa-instance-name}}"
-          MH_INSTANCE_NAME: '{{form.pipeline.parameters.mh-instance-name}}'
-          COS_INSTANCE_NAME: '{{form.pipeline.parameters.cos-instance-name}}'
         execute: true
   webide:
     service_id: orion
