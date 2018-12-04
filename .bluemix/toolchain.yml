@@ -11,7 +11,7 @@ template:
     - sample-repo
   info:
     git url: >-
-      [https://github.com/bienenstocks/starter-python-topology-data-historian](https://github.com/bienenstocks/starter-java-beam-data-historian)
+      [https://github.com/bienenstocks/starter-python-topology-data-historian](https://github.com/bienenstocks/starter-python-topology-data-historian)
     git branch: >-
       [master](https://github.com/bienenstocks/starter-python-topology-data-historian/tree/master)
 toolchain:
