@@ -7,26 +7,18 @@ stages:
     service: ${REPO}
   triggers:
   - type: commit
- properties:
-   - name: PIPELINE_API_KEY
-     value: ${API_KEY}
-     type: text
-   - name: APP_NAME
-     value: {{name}}
-     type: text
-{{#with config.creds.streamingAnalytics.[0]}}
-   - name: SA_INSTANCE
-     value: {{this.serviceInfo.name}}
-     type: text
-{{/with}}
+  properties:
+    - name: streaming_analytics_credentials
+      value: 'ENTER STREAMING ANALYTICS CREDENTIALS HERE'
+      type: text_area
   jobs:
   - name: Deploy flow
     type: deployer
     deploy_type: customimage
     script: |
       #!/bin/bash
-      chmod u+x deploy.sh
-      ./deploy.sh
+      pip3 install -r requirements.txt
+      python3 ./src/data_historian.py
     docker_image: avigad/java-python-alpine
 hooks:
 - enabled: true
