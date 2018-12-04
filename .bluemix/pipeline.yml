@@ -1,6 +1,6 @@
 ---
 stages:
-- name: BUILD
+- name: Build flow
   inputs:
   - type: git
     branch: master
@@ -8,7 +8,7 @@ stages:
   triggers:
   - type: commit
   jobs:
-  - name: Build
+  - name: Build driver
     type: builder
     artifact_dir: target
     script: |-
