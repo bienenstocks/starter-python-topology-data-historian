@@ -17,22 +17,43 @@ stages:
       cp .bluemix/scripts/* ${ARCHIVE_DIR}
 - name: Deploy flow to development
   inputs:
-  - type: git
-    branch: master
-    service: ${SAMPLE_REPO}
+  - type: job
+    stage: Build flow
+    job: Build driver
   triggers:
-  - type: commit
+  - type: stage
+  properties:
+  - name: SA_INSTANCE
+    value: ${SA_INSTANCE_NAME}
+    type: text
+  - name: MH_INSTANCE
+    value: ${MH_INSTANCE_NAME}
+    type: text
+  - name: COS_INSTANCE
+    value: ${COS_INSTANCE_NAME}
+    type: text
+  - name: APP_NAME
+    value: ${CF_APP_NAME}
+    type: text
+  - name: PIPELINE_API_KEY
+    value: ${API_KEY}
+    type: text
   jobs:
   - name: Deploy flow
     type: deployer
     deploy_type: customimage
+    target:
+      region_id: ${PROD_REGION_ID}
+      organization: ${PROD_ORG_NAME}
+      space: ${PROD_SPACE_NAME}
+      application: ${APP_NAME}
     script: |
-      #!/bin/bash
+      #!/bin/bash 
       chmod u+x deploy.sh
       ./deploy.sh
-    docker_image: avigad/java-python-alpine
-hooks:
-- enabled: true
+    docker_image: avigad/java-python-alpine 
+  hooks:
+   - enabled: true
   label: null
-  ssl_enabled: false
+  ssl_enabled: false 
   url: http://lms-api/v1/messaging/webhook/publish
