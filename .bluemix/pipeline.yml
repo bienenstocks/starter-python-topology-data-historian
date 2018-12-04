@@ -10,6 +10,11 @@ stages:
   jobs:
   - name: Build
     type: builder
+    artifact_dir: target
+    script: |-
+      #!/bin/bash
+      [[ -d "${ARCHIVE_DIR}" ]] || mkdir ${ARCHIVE_DIR}
+      cp .bluemix/scripts/* ${ARCHIVE_DIR}
 - name: Deploy flow to development
   inputs:
   - type: git
