@@ -1,14 +1,14 @@
-# Creating and Deploying a Data Historian Python Application using Beam
+# Creating and Deploying a Data Historian Python Application
 A generated IBM Cloud application
 
 ### Continuously deliver an app with IBM hosted repos and issue tracking
 
-This sample Python Beam application runs the DataHistorian pipeline.
+This sample Python application runs the DataHistorian pipeline.
 Data historian is an efficient way to collect and store time series data. The data might come from production lines,
 transportation routes, network devices, satellites, and other devices. The data is stored with a time stamp and other
 identifying information such as device ID and location.
 
-This sample application will deploy a Python Beam runner to ingest the Data historian data from an Event Streams topic.
+This sample application will ingest the Data historian data from an Event Streams topic.
 
 The data is then flowed through an aggregation operator. The aggregation operator will calculate the average barometric pressure,
 humidity, indoor temperature, and rainfall today for each weather station.
@@ -115,7 +115,7 @@ To get the service credentials for a service, go to the service instance in IBM 
 On the left panel click on **service credentials**. Click **view credentials** from one of the
 listed credentials.
 
-##### 3. Run the run-remote.sh script
+##### 3. Run the python script
 
 $ cd src
 
