@@ -77,10 +77,15 @@ In a terminal, run:
 
 $ git clone https://github.com/IBM/starter-python-topology-data-historian.git
 
-##### 2. Copy messageHub from vcap-template.json to vcap.json
+##### 2. Insert credentials
 
-Fill in the relevant service credential information in the vcap.json for your Event Streams
-instance under messageHub.
+Open up producer.py file, and search for "# Paste Events Streams credentials here"
+Fill in the relevant service credential information.
+        {
+            "user": <fill in>,
+            "password": <fill in>,
+            "kafka_brokers_sasl": [ <fill in>]
+        }
 To get the service credentials for a service, go to the service instance in IBM cloud.
 On the left panel click on **service credentials**. Click **view credentials** from one of the
 listed credentials.

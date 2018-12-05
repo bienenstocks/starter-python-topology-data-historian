@@ -1,0 +1,28 @@
+{
+	"streaming-analytics": [
+		{
+			"name": "",
+			"credentials": {
+				"apikey": "",
+				"iam_apikey_description": "",
+				"iam_apikey_name": "",
+				"iam_role_crn": "",
+				"iam_serviceid_crn": "",
+				"v2_rest_url": ""
+			}
+		}
+	],
+	"cos": {
+		"endpoint": "",
+		"bucket": "",
+		"apikey": "",
+		"resource_instance_id": ""
+	},
+	"messagehub": {
+		"kafka_brokers_sasl": [
+
+		],
+		"password": "",
+		"user": ""
+	}
+}
