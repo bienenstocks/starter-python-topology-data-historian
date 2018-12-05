@@ -3,12 +3,12 @@ A generated IBM Cloud application
 
 ### Continuously deliver an app with IBM hosted repos and issue tracking
 
-This sample Java Beam application runs the DataHistorian pipeline.
+This sample Python Beam application runs the DataHistorian pipeline.
 Data historian is an efficient way to collect and store time series data. The data might come from production lines,
 transportation routes, network devices, satellites, and other devices. The data is stored with a time stamp and other
 identifying information such as device ID and location.
 
-This sample application will deploy a Java Beam runner to ingest the Data historian data from an Event Streams topic.
+This sample application will deploy a Python Beam runner to ingest the Data historian data from an Event Streams topic.
 
 The data is then flowed through an aggregation operator. The aggregation operator will calculate the average barometric pressure,
 humidity, indoor temperature, and rainfall today for each weather station.
@@ -23,7 +23,9 @@ The aggregated tuple data will then flow to a Cloud Object Storage instance to b
   * Event Streams instance  - Standard Plan
   * Cloud Object Storage instance
   * Must have Editor permissions on a Toolchain Service in IBM Cloud
-* Be sure to [populate Event Streams ](#populateES) with a topic and Data Historian data before running the application.
+* To run locally and to populate Event Streams with sample data, must have Python 3.5 or higher installed.
+* Be sure to [populate Event Streams ](#populateES) Data Historian data before running the application.
+
 
 ## To get started, click **Deploy to IBM Cloud**.
 
@@ -84,13 +86,11 @@ listed credentials.
 
 ##### 3. Run the producer script
 
-In the root dir of the repo, run:
+$ cd sample_data_producer
 
-$ ./run-producer.sh
+$ pip3 install -r requirements.txt
 
-Note: in some environments, the AWS S3 Beam extension requires the awsRegion to be specified.
-IF the script fails, add to the run-producer.sh script's args the region to use for your cloud object storage.
-eg. "--awsRegion=us-south-1"
+$ python producer.py
 
 ## Deploying locally
 Alternatively to deploying the application to cloud, the application can be run locally once it's been cloned.
@@ -109,9 +109,18 @@ listed credentials.
 
 ##### 3. Run the run-remote.sh script
 
-$ ./run_remote.sh
+$ cd src
+
+$ python data_historian.py
 
 ## Monitoring your application<a name="monitor"></a>
 Once the application has been successfully deployed, either by running locally or by deploying to cloud,
 go to the Streaming Analytics instance that you are using to run the flow and click **LAUNCH**.
 This will open the Streaming Analytics console. From the console, you can view and monitor the running flow.
+
+## Troubleshooting
+
+1. If the deploy script fails when deploying to cloud, click on **view logs and history** to see the errors.
+IF the script needs to be modified, it can be edited directly in the git repo.
+Click on the Git repo from the toolchain view. Drill down into .bluemix/scripts, and open the deploy.sh script.
+Any changes made here will be picked up next time you click on **Delivery Pipeline**.
