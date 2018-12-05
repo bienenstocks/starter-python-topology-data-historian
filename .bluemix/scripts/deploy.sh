@@ -29,7 +29,6 @@ echo "{
         \"credentials\" : {
             \"apikey\": \"${API_KEY}\",
             \"iam_serviceid_crn\":\"$(echo ${SA_KEY} | awk 'BEGIN{FS="iam_serviceid_crn: "} {print $2}' | awk '{ print $1 }')\",
-            \"iam_apikey_description\":\"$(echo ${SA_KEY} | awk 'BEGIN{FS="iam_apikey_description: "} {print $2}' | awk '{ print $1 }')\",
             \"iam_apikey_name\":\"$(echo ${SA_KEY} | awk 'BEGIN{FS="iam_apikey_name: "} {print $2}' | awk '{ print $1 }')\",
             \"iam_role_crn\":\"$(echo ${SA_KEY} | awk 'BEGIN{FS="iam_role_crn: "} {print $2}' | awk '{ print $1 }')\",
             \"v2_rest_url\": \"$(echo ${SA_KEY} | awk 'BEGIN{FS="v2_rest_url: "} {print $2}' | awk '{ print $1 }')\"
