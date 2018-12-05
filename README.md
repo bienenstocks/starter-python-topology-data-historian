@@ -84,9 +84,7 @@ Fill in the relevant service credential information.
 
         {
             "user": "",
-
             "password": "",
-
             "kafka_brokers_sasl": []
         }
 
