@@ -1,4 +1,4 @@
-# Creating and Deploying a Data Historian Application using Java Beam
+# Creating and Deploying a Data Historian Python Application using Beam
 A generated IBM Cloud application
 
 ### Continuously deliver an app with IBM hosted repos and issue tracking
