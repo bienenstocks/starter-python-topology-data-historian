@@ -86,7 +86,3 @@ fi
 
 echo "}" >> vcap.json
 cat vcap.json
-cp requirements.txt  /tmp
-pip3 install -r /tmp/requirements.txt 
-cd src
-python3 data_historian.py
