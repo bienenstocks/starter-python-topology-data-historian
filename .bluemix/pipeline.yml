@@ -29,8 +29,8 @@ stages:
     deploy_type: customimage
     script: |
       #!/bin/bash
-      pip3 install -r requirements.txt
-      python3 ./src/data_historian.py
+      chmod u+x ./.bluemix/scripts/deploy.sh
+      ./.bluemix/scripts/deploy.sh
     docker_image: avigad/java-python-alpine
   hooks:
   - enabled: true

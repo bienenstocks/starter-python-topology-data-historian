@@ -28,6 +28,10 @@ echo "{
         \"name\" : \"streaming-analytics\",
         \"credentials\" : {
             \"apikey\": \"${API_KEY}\",
+            \"iam_serviceid_crn\":\"$(echo ${SA_KEY} | awk 'BEGIN{FS="iam_serviceid_crn: "} {print $2}' | awk '{ print $1 }')\",
+            \"iam_apikey_description\":\"$(echo ${SA_KEY} | awk 'BEGIN{FS="iam_apikey_description: "} {print $2}' | awk '{ print $1 }')\",
+            \"iam_apikey_name\":\"$(echo ${SA_KEY} | awk 'BEGIN{FS="iam_apikey_name: "} {print $2}' | awk '{ print $1 }')\",
+            \"iam_role_crn\":\"$(echo ${SA_KEY} | awk 'BEGIN{FS="iam_role_crn: "} {print $2}' | awk '{ print $1 }')\",
             \"v2_rest_url\": \"$(echo ${SA_KEY} | awk 'BEGIN{FS="v2_rest_url: "} {print $2}' | awk '{ print $1 }')\"
         }
     }]" > vcap.json
@@ -36,7 +40,7 @@ echo "{
 if [ $COS_INSTANCE ]; then
     echo "Get Cloud Object Storage Credentials..."
     bx resource service-key-delete "COS_${APP_NAME}" -f
-    COS_KEY=$(bx resource service-key-create "COS_${APP_NAME}" Manager --instance-name "${COS_INSTANCE}" --p {\"HMAC\":true})
+    COS_KEY=$(bx resource service-key-create "COS_${APP_NAME}" Manager --instance-name "${COS_INSTANCE}")
     API_KEY=$(echo ${COS_KEY} | awk 'BEGIN{FS="apikey: "} {print $2}' | awk '{ print $1 }')
     if [ -z "$API_KEY" ]; then
      echo "Error generating COS credentials: ${COS_KEY}"
@@ -53,10 +57,8 @@ if [ $COS_INSTANCE ]; then
     echo ",
         \"cos\": {
             \"endpoint\": \"s3-api.us-geo.objectstorage.softlayer.net\",
-            \"accessKeyId\": \"$(echo ${COS_KEY} | awk 'BEGIN{FS="access_key_id: "} {print $2}' | awk '{ print $1 }')\",
-            \"secretKey\": \"$(echo ${COS_KEY} | awk 'BEGIN{FS="secret_access_key: "} {print $2}' | awk '{ print $1 }')\",
-            \"bucket\": \"${APP_NAME}\",
-            \"filePrefix\": \"prefix\"
+            \"resource_instance_id\": \"$(echo ${COS_KEY} | awk 'BEGIN{FS="resource_instance_id: "} {print $2}' | awk '{ print $1 }')\",
+            \"bucket\": \"${APP_NAME}\"
         }" >> vcap.json
 fi
 
@@ -74,12 +76,11 @@ if [ $MH_INSTANCE ] ; then
     fi
 
     brokers=$(cat mh_key_out.json | jq -r '.resources[] | .entity.credentials.kafka_brokers_sasl')
-    brokersstrip=$(echo $brokers | tr -d '"' | tr -d '[' | tr -d ']')
     echo ",
           \"messagehub\": {
             \"user\": \"$(cat mh_key_out.json | jq -r '.resources[] | .entity.credentials.user')\",
             \"password\": \"$(cat mh_key_out.json | jq -r '.resources[] | .entity.credentials.password')\",
-            \"kafka_brokers_sasl\": [\"${brokersstrip}\"]
+            \"kafka_brokers_sasl\": $brokers
           }" >> vcap.json
 fi
 
@@ -87,4 +88,5 @@ echo "}" >> vcap.json
 cat vcap.json
 
 pip3 install -r requirements.txt 
-python3 ./src/data_historian.py
+cd ../../src
+python3 data_historian.py
