@@ -66,9 +66,10 @@ IF the deploy flow stage fails, click on **view logs and history** to find the f
 To debug, the deploy script can by found in the git repo under .bluemix/scripts.
 
 ## Populating Event Streams topic with Data Historian data<a name="populateES"></a>
-The application that is running will subscribe to a specific topic in your Event Streams instance to ingest the Data
-Historian data. This application provides an Event Streams Producer that can be run to create and
-populate this topic in Event Streams.
+The application that is running will create subscribe to a specific topic, **dataHistorianStarterkitSampleData**, in your Event Streams instance to ingest the Data
+Historian data.
+This application provides an Event Streams Producer that can be run to create and
+populate **dataHistorianStarterkitSampleData** in Event Streams.
 Before deploying the flow, run the Producer script to ensure the data is ready for ingest.
 
 ##### 1. Clone the starter-python-topology-data-historian code:
