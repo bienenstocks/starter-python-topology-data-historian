@@ -57,7 +57,7 @@ if [ $COS_INSTANCE ]; then
     echo ",
         \"cos\": {
             \"endpoint\": \"s3-api.us-geo.objectstorage.softlayer.net\",
-            \"apiKey\": \"${API_KEY}\",
+            \"apikey\": \"${API_KEY}\",
             \"resource_instance_id\": \"$(echo ${COS_KEY} | awk 'BEGIN{FS="resource_instance_id: "} {print $2}' | awk '{ print $1 }')\",
             \"bucket\": \"${APP_NAME}\"
         }" >> vcap.json
