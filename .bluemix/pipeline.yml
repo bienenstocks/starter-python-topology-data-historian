@@ -31,7 +31,7 @@ stages:
       #!/bin/bash
       chmod u+x ./.bluemix/scripts/deploy.sh
       ./.bluemix/scripts/deploy.sh
-    docker_image: avigad/java-python-alpine
+    docker_image: avigad/java-python
   hooks:
   - enabled: true
     label: null
