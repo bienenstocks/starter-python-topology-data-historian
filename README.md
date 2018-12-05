@@ -116,6 +116,7 @@ On the left panel click on **service credentials**. Click **view credentials** f
 listed credentials.
 
 ##### 3. Run the python script
+$ pip3 install -r requirements.txt
 
 $ cd src
 
