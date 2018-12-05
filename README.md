@@ -83,11 +83,11 @@ Open up producer.py file, and search for "# Paste Events Streams credentials her
 Fill in the relevant service credential information.
 
         {
-            "user": <fill in>,
+            "user": "",
 
-            "password": <fill in>,
+            "password": "",
 
-            "kafka_brokers_sasl": [ <fill in>]
+            "kafka_brokers_sasl": []
         }
 
 To get the service credentials for a service, go to the service instance in IBM cloud.
