@@ -10,6 +10,11 @@ if ! [ -x "$(command -v bx)" ]; then
     curl -fsSL https://clis.ng.bluemix.net/install/linux | sh
 fi
 
+for i in ${IDS_OUTPUT_PROPS//,/ }; do
+    eval "export $i=\"${!i}\"";
+    echo $i
+done
+
 API_ENV=$(echo ${PIPELINE_API_URL} | sed -e 's/.*devops-\(.*\)\/.*\/.*/\1/')
 bx login --apikey $PIPELINE_API_KEY -a $API_ENV
 bx target --cf
